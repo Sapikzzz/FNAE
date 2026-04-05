@@ -11,6 +11,8 @@ public class Door : MonoBehaviour
     
     public bool isOpen;
     public bool isOn;
+
+    [SerializeField] private PowerSystem power;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,15 +25,24 @@ public class Door : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 target = isOpen ? openPos : closedPos;
-        if (Vector3.Distance(transform.position, target) > 0.01f)
+        if (power.power >= 0)
         {
-            transform.position = Vector3.Lerp(transform.position, target, doorSpeed * Time.deltaTime);
+            Vector3 target = isOpen ? openPos : closedPos;
+            if (Vector3.Distance(transform.position, target) > 0.01f)
+            {
+                transform.position = Vector3.Lerp(transform.position, target, doorSpeed * Time.deltaTime);
+            }
+            else
+            {
+                transform.position = target;
+            } 
         }
         else
-        {
-            transform.position = target;
-        } 
+        {   
+            transform.position = Vector3.Lerp(transform.position, openPos, doorSpeed * Time.deltaTime);
+            isOn = true;
+            ChangeLight();
+        }
     }
 
     public void ChangeLight()
@@ -41,10 +52,12 @@ public class Door : MonoBehaviour
         if (isOn)
         {
             Light.SetActive(true);
+            power.systemsOn += 1;
         }
         else
         {
             Light.SetActive(false);
+            power.systemsOn -= 1;
         }
     }
 }
