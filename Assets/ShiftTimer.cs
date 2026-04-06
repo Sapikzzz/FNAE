@@ -13,6 +13,8 @@ public class ShiftTimer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI clockText;
 
     [SerializeField] private GameObject winScreen;
+
+    [SerializeField] private EnemySystem[] enemies;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,16 +30,19 @@ public class ShiftTimer : MonoBehaviour
             var hours = Mathf.FloorToInt(timer / 60);
             var minutes = Mathf.FloorToInt(timer - hours * 60);
 
-            if (hours >= 6)
+            if (minutes == 0)
+            {
+                for (int i = 0; i < enemies.Length; i++)
+                {
+                    enemies[i].ChangeAggressionByHour(hours);
+                }
+            }
+
+            if (hours >= shiftEndTime)
             {
                 winScreen.SetActive(true);
                 gameWon = true;
             }        
-        
-            if (hours == 0)
-            {
-                hours = 12;
-            }
         
             digitalClock = string.Format("{0:00}:{1:00}", hours, minutes);
         
