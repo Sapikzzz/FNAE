@@ -16,7 +16,7 @@ public class Door : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        transform.position = openPos;
+        transform.localPosition = openPos;
         isOpen = true;
         
         ChangeLight();
@@ -30,16 +30,16 @@ public class Door : MonoBehaviour
             Vector3 target = isOpen ? openPos : closedPos;
             if (Vector3.Distance(transform.position, target) > 0.01f)
             {
-                transform.position = Vector3.Lerp(transform.position, target, doorSpeed * Time.deltaTime);
+                transform.localPosition = Vector3.Lerp(transform.localPosition, target, doorSpeed * Time.deltaTime);
             }
             else
             {
-                transform.position = target;
+                transform.localPosition = target;
             } 
         }
         else
         {   
-            transform.position = Vector3.Lerp(transform.position, openPos, doorSpeed * Time.deltaTime);
+            transform.localPosition = Vector3.Lerp(transform.localPosition, openPos, doorSpeed * Time.deltaTime);
             isOn = true;
             ChangeLight();
         }

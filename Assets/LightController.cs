@@ -3,8 +3,12 @@ using UnityEngine;
 public class LightController : MonoBehaviour
 {
     [SerializeField] private Door door;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip clickSound;
+
     private void OnMouseDown()
     {
-        door.ChangeLight();
-    } 
+        audioSource.PlayOneShot(clickSound); 
+        door.ChangeLight();                  
+    }
 }

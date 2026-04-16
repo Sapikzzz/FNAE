@@ -18,10 +18,16 @@ public class EnemySystem : MonoBehaviour
 
     [SerializeField] private int[] AggresionByHour;
     
+    [SerializeField] private GameOverManager gameOverManager;
+    
+    private Animator animator;
+    private bool hasJumpscared = false;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         NMA = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     // Update is called once per frame
@@ -64,7 +70,9 @@ public class EnemySystem : MonoBehaviour
         }
         if (targets[currentTarget].GetComponent<DestinationPoint>().isOffice)
         {
-            Debug.Log("you died"); //jumpscare place
+            hasJumpscared = true;
+            gameOverManager.ShowGameOver();
+            return;
         }
         NMA.destination = targets[currentTarget].transform.position;
     }
